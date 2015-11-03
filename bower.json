@@ -1,0 +1,33 @@
+{
+  "name": "zaya_task_1",
+  "version": "0.0.0",
+  "authors": [
+    "Chitrank Dixit <chitrankdixit@gmail.com>"
+  ],
+  "description": "Teacher Students Manager",
+  "keywords": [
+    "python",
+    "django",
+    "angularjs"
+  ],
+  "license": "MIT",
+  "homepage": "http://chitrank-dixit.github.io/",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "angular": "~1.4.7",
+    "angular-cookies": "~1.4.7",
+    "angular-route": "~1.4.7",
+    "angular-ui-router": "~0.2.15",
+    "bootstrap": "~3.3.5",
+    "bootstrap-material-design": "~0.3.0",
+    "jquery": "~2.1.4",
+    "ng-dialog": "ngDialog#~0.5.5",
+    "underscore": "~1.8.3"
+  }
+}
