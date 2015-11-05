@@ -1,6 +1,6 @@
 from django.conf.urls import include, url, patterns
 from django.contrib import admin
-from resources.api import RegisterUserResource, UserResource, StudentResource, TeacherResource, AttendenceResource, PointsResource, BehaviorResource
+from resources.api import UserResource, StudentResource, TeacherResource, AttendenceResource, PointsResource, BehaviorResource
 from zaya_task_1.views import IndexView
 from tastypie.api import Api 
 from User_Manager.views import LoginView, RegisterView
@@ -16,7 +16,6 @@ from User_Manager import views
 
 
 v1_api = Api(api_name="v1")
-v1_api.register(RegisterUserResource())
 v1_api.register(UserResource())
 v1_api.register(StudentResource())
 v1_api.register(TeacherResource())
@@ -42,7 +41,7 @@ urlpatterns = patterns('',
     url(r'^.*$', IndexView.as_view(), name='index'),
     #(r'^admin/', include(admin.site.urls)),
     url(r'^api/', include(v1_api.urls)),
-    #url(r'^api/v1/auth/login/', 'User_Manager.views.login', name='login'),
+    #url(r'^/', 'User_Manager.views.login', name='login'),
     #url(r'^api/v1/auth/login/', LoginView.as_view(), name='login'),
     #url(r'^api/v1/auth/register/', RegisterView.as_view(), name='register'),       
 )

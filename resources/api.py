@@ -15,100 +15,80 @@ from django.contrib.auth.models import User
 from tastypie.http import HttpUnauthorized, HttpForbidden
 from tastypie import fields
 from tastypie.authorization import DjangoAuthorization
-from tastypie.resources import ModelResource, ALL, ALL_WITH_RELATIONS
 from tastypie.utils import trailing_slash
 from tastypie.authentication import SessionAuthentication, BasicAuthentication
+from tastypie.resources import ModelResource, ALL, ALL_WITH_RELATIONS
+from auth import BasicSessionAuthentication, UserAuthorization
 from tastypie.authorization import Authorization
+from tastypie import fields
+from django.conf.urls import url
+from services import AuthService
 
-class RegisterUserResource(ModelResource):
-    class Meta:
-        allowed_methods = ['post']
-        object_class = User
+class BaseApiResource(ModelResource):
 
-        authentication = BasicAuthentication()
-        authorization = DjangoAuthorization()
+    def response_success(self, request, data=None):
 
-        include_resource_uri = False
-        fields = ['username']
+        response = {"success": True}
+        if data is not None:
+            response.update(data)
 
-        resource_name = 'register'
+        return self.create_response(request, response)
 
-    def obj_create(self, bundle, request=None, **kwargs):
-        try:
-            bundle = super(RegisterUserResource).obj_create(bundle, request, **kwargs)
-            bundle.obj.set_password(bundle.data.get('password'))
-            bundle.obj.save()
-        except IntegrityError:
-            raise BadRequest('User with this username already exists')
-        return bundle
+    def response_failure(self, request, message):
 
-class UserResource(resources.ModelResource):
+        response = {"success": False, "message": message}
+        return self.create_response(request, response)
+
+
+class UserResource(BaseApiResource):
+
+    service = AuthService()
+
     class Meta:
         queryset = User.objects.all()
-        resource_name = 'user'
-        allowed_methods = ['post','get']
-        #excludes = ['email', 'password', 'is_superuser']
-        #authorization = DjangoAuthorization()
-        #filtering = { "id" : ALL }
-        #authentication = BasicAuthentication()
-        #always_return_data = True
+        resource_name = "customer"
+        authorization = Authorization()
+        always_return_data = True
 
     def prepend_urls(self):
         return [
-            url(r"^(?P<resource_name>%s)/register%s$" %
-                (self._meta.resource_name, trailing_slash()),
-                self.wrap_view('register'), name="api/v1"),
-            url(r"^(?P<resource_name>%s)/login%s$" %
-                (self._meta.resource_name, trailing_slash()),
-                self.wrap_view('login'), name="api/v1"),
-            url(r'^(?P<resource_name>%s)/logout%s$' %
-                (self._meta.resource_name, trailing_slash()),
-                self.wrap_view('logout'), name='api/v1'),
+            url(r"^(?P<resource_name>%s)/login/$" % (self._meta.resource_name, ), self.wrap_view('login'), name="api_login"),
+            url(r"^(?P<resource_name>%s)/logout/$" % (self._meta.resource_name, ), self.wrap_view('logout'), name="api_logout"),
+            url(r"^(?P<resource_name>%s)/register/$" % (self._meta.resource_name, ), self.wrap_view('register'), name="api_register"),
+            url(r"^(?P<resource_name>%s)/is_logged_in/$" % (self._meta.resource_name, ), self.wrap_view('is_logged_in'), name="api_is_logged_in"),
         ]
 
-    def register(self, bundle, request=None, **kwargs):
-        self.method_check(request, allowed=['post'])
-        try:
-            bundle = super(RegisterUserResource).obj_create(bundle, request, **kwargs)
-            bundle.obj.set_password(bundle.data.get('password'))
-            bundle.obj.save()
-        except IntegrityError:
-            raise BadRequest('User with this username already exists')
-        return bundle
-
     def login(self, request, **kwargs):
-        self.method_check(request, allowed=['post'])
 
-        data = self.deserialize(request, request.raw_post_data, format=request.META.get('CONTENT_TYPE', 'application/json'))
+        username = request.POST.get("username")
+        password = request.POST.get("password")
 
-        username = data.get('username', '')
-        password = data.get('password', '')
+        try:
+            user = self.service.login(request, username, password)
+            return self.response_success(request, data={"id": user.id})
+        except Exception, e:
+            return self.response_failure(request, str(e))
 
-        user = authenticate(username=username, password=password)
-        if user:
-            if user.is_active:
-                login(request, user)
-                return self.create_response(request, {
-                    'success': True
-                })
-            else:
-                return self.create_response(request, {
-                    'success': False,
-                    'reason': 'disabled',
-                    }, HttpForbidden )
-        else:
-            return self.create_response(request, {
-                'success': False,
-                'reason': 'incorrect',
-                }, HttpUnauthorized )
+    def is_logged_in(self, request, **kwargs):
+
+        return self.create_response(request, request.user.is_authenticated())
 
     def logout(self, request, **kwargs):
-        self.method_check(request, allowed=['get'])
-        if request.user and request.user.is_authenticated():
-            logout(request)
-            return self.create_response(request, { 'success': True })
-        else:
-            return self.create_response(request, { 'success': False }, HttpUnauthorized)
+
+        self.service.logout(request)
+        return self.response_success(request)
+
+    def register(self, request, **kwargs):
+
+        username = request.POST.get("username")
+        password = request.POST.get("password")
+        password_again = request.POST.get("password_again")
+
+        try:
+            user = self.service.register(request, username, password, password_again)
+            return self.response_success(request, data={"id": user.id})
+        except Exception, e:
+            return self.response_failure(request, str(e))
 
 
 class StudentResource(ModelResource):

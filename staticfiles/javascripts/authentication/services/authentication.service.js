@@ -9,13 +9,13 @@
     .module('app.authentication.services')
     .factory('Authentication', Authentication);
 
-  Authentication.$inject = ['$cookies', '$http'];
+  Authentication.$inject = ['$cookies', '$http', '$state'];
 
   /**
    * @namespace Authentication
    * @returns {Factory}
    */
-  function Authentication($cookies, $http) {
+  function Authentication($cookies, $http, $state) {
     /**
      * @name Authentication
      * @desc The Factory to be returned
@@ -68,11 +68,13 @@
      * @returns {Promise}
      * @memberOf app.authentication.services.Authentication
      */
-    function login(email, password) {
-      console.log("In There");
-      return $http.post('/api/v1/login/', {
-        email: email, password: password
-      }).then(loginSuccessFn, loginErrorFn);
+    function login(username, password) {
+      //console.log("In There");
+      
+
+      return $http.post('/api/v1/user/login/', {
+        username: username, password: password
+      }, { headers: {'Content-Type': 'application/json'}}).then(loginSuccessFn, loginErrorFn);
 
       /**
        * @name loginSuccessFn
@@ -102,7 +104,7 @@
      * @memberOf app.authentication.services.Authentication
      */
     function logout() {
-      return $http.post('/api/v1/logout/')
+      return $http.post('/api/v1/user/logout/')
         .then(logoutSuccessFn, logoutErrorFn);
 
       /**
@@ -112,7 +114,7 @@
       function logoutSuccessFn(data, status, headers, config) {
         Authentication.unauthenticate();
 
-        window.location = '/';
+        $state.go('home');
       }
 
       /**
@@ -135,7 +137,7 @@
     * @memberOf app.authentication.services.Authentication
     */
     function register(email, password, username) {
-      return $http.post('/api/v1/register/', {
+      return $http.post('/api/v1/user/register/', {
         username: username,
         password: password,
         email: email
