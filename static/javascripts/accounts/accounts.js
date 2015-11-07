@@ -1,11 +1,11 @@
 angular.module('app')
-.controller('AccountController', ['$location', '$routeParams','Account', 'Snackbar', function($location, $routeParams,Account, Snackbar) {
+.controller('AccountController', ['$scope','$location', '$routeParams','Account', 'Snackbar', function($scope,$location, $routeParams,Account, Snackbar) {
 	  var vm = this;
 
     vm.account = undefined;
     //vm.posts = [];
 
-    $scope.activate();
+    
     $scope.activate = function() {
       var username = $routeParams.username.substr(1);
 
@@ -48,6 +48,7 @@ angular.module('app')
       //   Snackbar.error(data.data.error);
       // }
     }
+    $scope.activate();
   
 
 }])
@@ -58,7 +59,7 @@ angular.module('app')
     vm.destroy = destroy;
     vm.update = update;
 
-    $scope.activate();
+    
 
 
     /**
@@ -161,9 +162,11 @@ angular.module('app')
         Snackbar.error(data.error);
       }
     }
+
+    $scope.activate();
   
 }])
-.factory('Account' ,['$http', '$scope' ,function($http, $scope) {
+.factory('Account' ,['$http' ,function($http) {
 	var Account = {
       destroy: destroy,
       get: get,
@@ -181,7 +184,7 @@ angular.module('app')
      * @returns {Promise}
      * @memberOf app.accounts.services.Account
      */
-    $scope.destroy = function(username) {
+    function destroy(username) {
       return $http.delete('/api/v1/accounts/' + username + '/');
     }
 
@@ -193,7 +196,7 @@ angular.module('app')
      * @returns {Promise}
      * @memberOf app.accounts.services.Account
      */
-    $scope.get = function(username) {
+    function get(username) {
       return $http.get('/api/v1/accounts/' + username + '/');
     }
 
@@ -206,7 +209,7 @@ angular.module('app')
      * @returns {Promise}
      * @memberOf app.accounts.services.Account
      */
-    $scope.update = function(username, account) {
+    function update(username, account) {
       return $http.put('/api/v1/accounts/' + username + '/', account);
     }
 }]);
