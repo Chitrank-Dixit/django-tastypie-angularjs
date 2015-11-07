@@ -3,8 +3,7 @@ from django.contrib import admin
 from resources.api import UserResource, StudentResource, TeacherResource, AttendenceResource, PointsResource, BehaviorResource
 from zaya_task_1.views import IndexView
 from tastypie.api import Api 
-from User_Manager.views import LoginView, RegisterView
-from User_Manager import views
+from views import get_index
 
 # register_user_resource = RegisterUserResource()
 # login_user_resource = LoginUserResource()
@@ -38,7 +37,8 @@ urlpatterns = patterns('',
     # The normal jazz here...
     #url(r'^$', 'zaya_task_1.views.home', name='home'),
     url(r'^admin/', include(admin.site.urls)),
-    url(r'^.*$', IndexView.as_view(), name='index'),
+    #url(r'^.*$', IndexView.as_view(), name='index'),
+    url(r'^.*$', get_index),
     #(r'^admin/', include(admin.site.urls)),
     url(r'^api/', include(v1_api.urls)),
     #url(r'^/', 'User_Manager.views.login', name='login'),
