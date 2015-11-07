@@ -46,7 +46,7 @@ class UserResource(BaseApiResource):
 
     class Meta:
         queryset = User.objects.all()
-        resource_name = "customer"
+        resource_name = "user"
         authorization = Authorization()
         always_return_data = True
 
@@ -59,12 +59,12 @@ class UserResource(BaseApiResource):
         ]
 
     def login(self, request, **kwargs):
-
-        username = request.POST.get("username")
-        password = request.POST.get("password")
+        username = request.POST.get("username",'')
+        password = request.POST.get("password",'')
 
         try:
             user = self.service.login(request, username, password)
+            print "Logged in now",user
             return self.response_success(request, data={"id": user.id})
         except Exception, e:
             return self.response_failure(request, str(e))
@@ -79,10 +79,9 @@ class UserResource(BaseApiResource):
         return self.response_success(request)
 
     def register(self, request, **kwargs):
-
-        username = request.POST.get("username")
-        password = request.POST.get("password")
-        password_again = request.POST.get("password_again")
+        username = request.POST.get("username",'bs')
+        password = request.POST.get("password", 'bs')
+        password_again = request.POST.get("password_again", 'bs')
 
         try:
             user = self.service.register(request, username, password, password_again)

@@ -1,17 +1,17 @@
 angular.module('app')
 .controller( 'LoginController', ['$location', '$scope', 'Authentication', function($location, $scope, Authentication) {
-	var vm = this;
+	//var vm = this;
 
-    vm.login = login;
+    //vm.login = login;
 
-    activate();
+    
 
     /**
     * @name activate
     * @desc Actions to be performed when this controller is instantiated
     * @memberOf app.authentication.controllers.LoginController
     */
-    function activate() {
+    $scope.activate = function() {
       // If the user is authenticated, they should not be here.
       if (Authentication.isAuthenticated()) {
         $location.url('/');
@@ -23,9 +23,14 @@ angular.module('app')
     * @desc Log the user in
     * @memberOf app.authentication.controllers.LoginController
     */
-    function login() {
-      Authentication.login(vm.username, vm.password);
+    // function login() {
+    //   Authentication.login(vm.username, vm.password);
+    // }
+    $scope.login = function() {
+        Authentication.login($scope.vm.username, $scope.vm.password);
     }
+
+    $scope.activate();
 }])
 
 .controller('RegisterController', [ '$location', '$scope', 'Authentication', function($location, $scope, Authentication) {
@@ -33,14 +38,14 @@ angular.module('app')
 
     vm.register = register;
 
-    activate();
+    $scope.activate();
 
     /**
      * @name activate
      * @desc Actions to be performed when this controller is instantiated
      * @memberOf app.authentication.controllers.RegisterController
      */
-    function activate() {
+    $scope.activate = function() {
       // If the user is authenticated, they should not be here.
       if (Authentication.isAuthenticated()) {
         $location.url('/');
@@ -52,24 +57,24 @@ angular.module('app')
      * @desc Register a new user
      * @memberOf app.authentication.controllers.RegisterController
      */
-    function register() {
-      Authentication.register(vm.email, vm.password, vm.username);
+    $scope.register = function() {
+      Authentication.register($scope.vm.email, $scope.vm.password, $scope.vm.username);
     }
 }])
-.factory('Authentication',['$cookies', '$http', '$state', function($cookies, $http, $state) {
+.factory('Authentication',['$scope','$cookies', '$http', '$state' ,function($scope,$cookies, $http, $state) {
 	
 	// csrf settings for the $http resource
 	$http.defaults.xsrfHeaderName = 'X-CSRFToken';
-    $http.defaults.xsrfCookieName = 'csrftoken';
-    $http.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
+  $http.defaults.xsrfCookieName = 'csrftoken';
+  $http.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
 	var Authentication = {
-      getAuthenticatedAccount: getAuthenticatedAccount,
-      isAuthenticated: isAuthenticated,
-      login: login,
-      logout: logout,
-      register: register,
-      setAuthenticatedAccount: setAuthenticatedAccount,
-      unauthenticate: unauthenticate
+      getAuthenticatedAccount: $scope.getAuthenticatedAccount,
+      isAuthenticated: $scope.isAuthenticated,
+      login: $scope.login,
+      logout: $scope.logout,
+      register: $scope.register,
+      setAuthenticatedAccount: $scope.setAuthenticatedAccount,
+      unauthenticate: $scope.unauthenticate
     };
 
     return Authentication;
@@ -82,7 +87,7 @@ angular.module('app')
      * @returns {object|undefined} Account if authenticated, else `undefined`
      * @memberOf app.authentication.services.Authentication
      */
-    function getAuthenticatedAccount() {
+    $scope.getAuthenticatedAccount = function() {
       if (!$cookies.authenticatedAccount) {
         return;
       }
@@ -97,7 +102,7 @@ angular.module('app')
      * @returns {boolean} True is user is authenticated, else false.
      * @memberOf app.authentication.services.Authentication
      */
-    function isAuthenticated() {
+    $scope.isAuthenticated = function() {
       return !!$cookies.authenticatedAccount;
     }
 
@@ -110,24 +115,24 @@ angular.module('app')
      * @returns {Promise}
      * @memberOf app.authentication.services.Authentication
      */
-    function login(username, password) {
+    $scope.login = function(username, password) {
       //console.log("In There");
       
-      $http({
-        method: 'POST',
-        url: '/api/v1/user/login/',
-        headers: {'X-Requested-With': 'XMLHttpRequest'},
-        data: { username: username, password: password},
-      }).success(function(data, status, headers, config) {
-        //console.log("Created new author " + data.name);
-        window.location.href = "/authors";
-      }).error(function(response, status) {
-        console.log("Failed to create new author " + status + ' ' + response);
-      });
-	     console.log(username, password)
-      // return $http.post('/api/v1/user/login/', {
-      //   username: username, password: password
-      // }).then(loginSuccessFn, loginErrorFn);
+      // $http({
+      //   method: 'POST',
+      //   url: '/api/v1/user/login/',
+      //   headers: {'X-Requested-With': 'XMLHttpRequest', 'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'},
+      //   data: { username: username, password: password},
+      // }).success(function(data, status, headers, config) {
+      //   //console.log("Created new author " + data.name);
+      //   window.location.href = "/authors";
+      // }).error(function(response, status) {
+      //   console.log("Failed to create new author " + status + ' ' + response);
+      // });
+	     // console.log(username, password)
+      return $http.post('/api/v1/user/login/', {
+        username: username, password: password
+      }).then(loginSuccessFn, loginErrorFn);
 
       /**
        * @name loginSuccessFn
@@ -156,7 +161,7 @@ angular.module('app')
      * @returns {Promise}
      * @memberOf app.authentication.services.Authentication
      */
-    function logout() {
+    $scope.logout = function() {
       return $http.post('/api/v1/user/logout/')
         .then(logoutSuccessFn, logoutErrorFn);
 
@@ -189,7 +194,7 @@ angular.module('app')
     * @returns {Promise}
     * @memberOf app.authentication.services.Authentication
     */
-    function register(email, password, username) {
+    $scope.register = function(email, password, username) {
       return $http.post('/api/v1/user/register/', {
         username: username,
         password: password,
@@ -221,7 +226,7 @@ angular.module('app')
      * @returns {undefined}
      * @memberOf app.authentication.services.Authentication
      */
-    function setAuthenticatedAccount(account) {
+    $scope.setAuthenticatedAccount = function(account) {
       $cookies.authenticatedAccount = JSON.stringify(account);
     }
 
@@ -232,7 +237,7 @@ angular.module('app')
      * @returns {undefined}
      * @memberOf app.authentication.services.Authentication
      */
-    function unauthenticate() {
+    $scope.unauthenticate = function() {
       delete $cookies.authenticatedAccount;
     }
 }]);

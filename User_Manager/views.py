@@ -30,11 +30,11 @@ class RegisterView(View):
     	return super(RegisterView, self).dispatch(*args, **kwargs)
 
 #@csrf_exempt
-@require_http_methods(["GET", "POST"])
-def login(request):
-	if request.method == 'POST':
-		print 'Got it right'
-	elif request.method == 'GET':
-		print 'Hello'
-	data = {"msg":"success"}
-	return JsonResponse(data)
+# @require_http_methods(["GET", "POST"])
+# def login(request):
+# 	if request.method == 'POST':
+# 		print 'Got it right'
+# 	elif request.method == 'GET':
+# 		print 'Hello'
+# 	data = {"msg":"success"}
+# 	return JsonResponse(data)

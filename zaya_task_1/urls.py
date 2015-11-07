@@ -38,7 +38,7 @@ urlpatterns = patterns('',
     # The normal jazz here...
     #url(r'^$', 'zaya_task_1.views.home', name='home'),
     url(r'^admin/', include(admin.site.urls)),
-    url(r'^.*$', IndexView.as_view(), name='index'),
+    #url(r'^.*$', IndexView.as_view(), name='index'),
     #(r'^admin/', include(admin.site.urls)),
     url(r'^api/', include(v1_api.urls)),
     #url(r'^/', 'User_Manager.views.login', name='login'),

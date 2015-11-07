@@ -3,10 +3,10 @@ angular.module('app')
 	  var vm = this;
 
     vm.account = undefined;
-    vm.posts = [];
+    //vm.posts = [];
 
-    activate();
-    function activate() {
+    $scope.activate();
+    $scope.activate = function() {
       var username = $routeParams.username.substr(1);
 
       Account.get(username).then(accountSuccessFn, accountErrorFn);
@@ -52,13 +52,13 @@ angular.module('app')
 
 }])
 
-.controller('AccountSettingsController', ['$location', '$routeParams', 'Authentication', 'Account', 'Snackbar' , function($location, $routeParams, Authentication, Account, Snackbar) {
+.controller('AccountSettingsController', ['$scope','$location', '$routeParams', 'Authentication', 'Account', 'Snackbar' , function($scope,$location, $routeParams, Authentication, Account, Snackbar) {
 	var vm = this;
 
     vm.destroy = destroy;
     vm.update = update;
 
-    activate();
+    $scope.activate();
 
 
     /**
@@ -66,7 +66,7 @@ angular.module('app')
      * @desc Actions to be performed when this controller is instantiated.
      * @memberOf app.accounts.controllers.AccountSettingsController
      */
-    function activate() {
+    $scope.activate = function() {
       var authenticatedAccount = Authentication.getAuthenticatedAccount();
       var username = $routeParams.username.substr(1);
 
@@ -109,7 +109,7 @@ angular.module('app')
      * @desc Destroy this account
      * @memberOf app.accounts.controllers.AccountSettingsController
      */
-    function destroy() {
+     $scope.destroy = function() {
       Account.destroy(vm.account.username).then(accountSuccessFn, accountErrorFn);
 
       /**
@@ -139,7 +139,7 @@ angular.module('app')
      * @desc Update this account
      * @memberOf app.accounts.controllers.AccountSettingsController
      */
-    function update() {
+    $scope.update = function() {
       var username = $routeParams.username.substr(1);
 
       Account.update(username, vm.account).then(accountSuccessFn, accountErrorFn);
@@ -163,7 +163,7 @@ angular.module('app')
     }
   
 }])
-.factory('Account' ,['$http', function($http) {
+.factory('Account' ,['$http', '$scope' ,function($http, $scope) {
 	var Account = {
       destroy: destroy,
       get: get,
@@ -181,7 +181,7 @@ angular.module('app')
      * @returns {Promise}
      * @memberOf app.accounts.services.Account
      */
-    function destroy(username) {
+    $scope.destroy = function(username) {
       return $http.delete('/api/v1/accounts/' + username + '/');
     }
 
@@ -193,7 +193,7 @@ angular.module('app')
      * @returns {Promise}
      * @memberOf app.accounts.services.Account
      */
-    function get(username) {
+    $scope.get = function(username) {
       return $http.get('/api/v1/accounts/' + username + '/');
     }
 
@@ -206,7 +206,7 @@ angular.module('app')
      * @returns {Promise}
      * @memberOf app.accounts.services.Account
      */
-    function update(username, account) {
+    $scope.update = function(username, account) {
       return $http.put('/api/v1/accounts/' + username + '/', account);
     }
 }]);

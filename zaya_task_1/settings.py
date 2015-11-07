@@ -12,6 +12,7 @@ https://docs.djangoproject.com/en/1.8/ref/settings/
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 import os
+import mongoengine
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
@@ -42,8 +43,10 @@ INSTALLED_APPS = (
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'tastypie',
+    'tastypie_mongoengine',
     'compressor',
     'corsheaders',
+    'djangular',
     # created by me
     'User_Manager',
     'Class_Manager',
@@ -103,13 +106,17 @@ CORS_ALLOW_HEADERS = (
 #         'NAME': 'zaya'
 #     }
 # }
+# # Data base settings
+# MONGO_DATABASE_NAME = 'zaya'
 
 
-STATICFILES_FINDERS = (
-    'django.contrib.staticfiles.finders.FileSystemFinder',
-    'django.contrib.staticfiles.finders.AppDirectoriesFinder',
-    'compressor.finders.CompressorFinder',
-)
+# mongoengine.connect('task', host='mongodb://localhost:27017/'+MONGO_DATABASE_NAME)
+
+# STATICFILES_FINDERS = (
+#     'django.contrib.staticfiles.finders.FileSystemFinder',
+#     'django.contrib.staticfiles.finders.AppDirectoriesFinder',
+#     'compressor.finders.CompressorFinder',
+# )
 
 DATABASES = {
     'default': {

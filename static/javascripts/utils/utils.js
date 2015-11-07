@@ -1,5 +1,5 @@
 angular.module('app')
-.factory('Snackbar', [function($scope) {
+.factory('Snackbar', [function( $scope) {
 
 	var Snackbar = {
       error: error,

@@ -11,7 +11,9 @@ class AuthService(object):
             raise Exception("User or password invalid")
         login(request, user)
 
-        return user.get_profile()
+
+
+        return user
 
     def logout(self, request):
 
