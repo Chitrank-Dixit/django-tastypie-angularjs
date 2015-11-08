@@ -2,8 +2,8 @@ angular.module('app',['ui.router', 'ngCookies', 'ngRoute'])
 .config(['$stateProvider','$urlRouterProvider','$locationProvider','$httpProvider', '$routeProvider' ,function($stateProvider, $urlRouterProvider, $locationProvider, $httpProvider, $routeProvider) {
 
   
-  // $locationProvider.html5Mode(true);
-  // $locationProvider.hashPrefix('!');
+  $locationProvider.html5Mode(true);
+  $locationProvider.hashPrefix('!');
   $httpProvider.defaults.useXDomain = true;
   $httpProvider.defaults.xsrfCookieName = 'csrftoken';
   $httpProvider.defaults.xsrfHeaderName = 'X-CSRFToken';
@@ -19,7 +19,7 @@ angular.module('app',['ui.router', 'ngCookies', 'ngRoute'])
       controller: 'RegisterController', 
       controllerAs: 'vm',
       templateUrl: '/static/templates/authentication/register.html'
-    }).when('/login/', {
+    }).when('/login', {
       controller: 'LoginController',
       controllerAs: 'vm',
       templateUrl: '/static/templates/authentication/login.html'

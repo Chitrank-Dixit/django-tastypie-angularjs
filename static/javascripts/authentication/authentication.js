@@ -27,6 +27,7 @@ angular.module('app')
     //   Authentication.login(vm.username, vm.password);
     // }
     $scope.login = function() {
+        console.log('In here');
         Authentication.login($scope.vm.username, $scope.vm.password);
     }
 
@@ -117,7 +118,7 @@ angular.module('app')
      * @memberOf app.authentication.services.Authentication
      */
     function login(username, password) {
-      //console.log("In There");
+      console.log("In There");
       
       // $http({
       //   method: 'POST',
@@ -143,7 +144,7 @@ angular.module('app')
         console.log("Data is",data);
         Authentication.setAuthenticatedAccount(data.data);
 
-        window.location = '/';
+        //window.location = '/';
       }
 
       /**

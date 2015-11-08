@@ -1,4 +1,4 @@
-angular.module('app',['ui.router', 'ngCookies', 'ngRoute'])
+angular.module('app21',['ui.router', 'ngCookies', 'ngRoute'])
 .config(['$stateProvider','$urlRouterProvider','$locationProvider','$httpProvider', '$routeProvider' ,function($stateProvider, $urlRouterProvider, $locationProvider, $httpProvider, $routeProvider) {
 
   

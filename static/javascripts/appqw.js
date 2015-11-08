@@ -56,10 +56,16 @@ angular
   // }])
 
   .config(['$stateProvider', '$urlRouterProvider', function($stateProvider, $urlRouterProvider) {
-    $urlRouterProvider.otherwise('/');
+    $urlRouterProvider.otherwise('/login');
     //$urlRouterProvider.otherwise('/core/exam_view');
 
     $stateProvider
+
+    .state('app', {
+      abstract: true,
+      url: '/app',
+      templateUrl: 'static/templates/layout/index.html'
+    })
 
     .state('app.index', {
       url: '/dashboard',
@@ -98,39 +104,11 @@ angular
           ]);
         }]
       }
-    })
+    });
 
-    // .state('app', {
-    //   abstract: true,
-    //   url: '/app',
-    //   templateUrl: 'static/templates/index.html'
-    // })
-    //dashboard
     
-    .state('app.branch', {
-      url: '/branch',
-      controller: 'BranchesCtrl',
-      templateUrl: 'views/tmpl/branch.html',
-      resolve: {
-        plugins: ['$ocLazyLoad', function($ocLazyLoad) {
-          return $ocLazyLoad.load([
-            'scripts/vendor/datatables/datatables.bootstrap.min.css'
-          ]);
-        }]
-      }
-    })
-    .state('app.teacher', {
-      url: '/teacher',
-      controller: 'TeachersCtrl',
-      templateUrl: 'views/tmpl/teacher.html',
-      resolve: {
-        plugins: ['$ocLazyLoad', function($ocLazyLoad) {
-          return $ocLazyLoad.load([
-            'scripts/vendor/datatables/datatables.bootstrap.min.css'
-          ]);
-        }]
-      }
-    })
+    
+    
     
     
   }]);
