@@ -12,6 +12,6 @@ class IndexView(TemplateView):
     def dispatch(self, *args, **kwargs):
         return super(IndexView, self).dispatch(*args, **kwargs)
 
-@csrf_exempt
+# @csrf_exempt
 def get_index(request):
     return render_to_response('index.html')

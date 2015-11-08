@@ -120,31 +120,31 @@ angular.module('app')
     function login(username, password) {
       console.log("In There");
       
-      // $http({
-      //   method: 'POST',
-      //   url: '/api/v1/user/login/',
-      //   headers: {'X-Requested-With': 'XMLHttpRequest', 'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'},
-      //   data: { username: username, password: password},
-      // }).success(function(data, status, headers, config) {
-      //   //console.log("Created new author " + data.name);
-      //   window.location.href = "/authors";
-      // }).error(function(response, status) {
-      //   console.log("Failed to create new author " + status + ' ' + response);
-      // });
+      return $http({
+        method: 'POST',
+        url: '/api/v1/user/login/',
+        headers: {'X-Requested-With': 'XMLHttpRequest', 'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'},
+        data: { username: username, password: password},
+      }).success(function(data, status, headers, config) {
+        console.log("Created new author " + data.name);
+        window.location.href = "/";
+      }).error(function(response, status) {
+        console.log("Failed to create new author " + status + ' ' + response);
+      });
 	     // console.log(username, password)
-      return $http.post('/api/v1/user/login/', {
-        username: username, password: password
-      }).then(loginSuccessFn, loginErrorFn);
+      // return $http.post('/api/v1/user/login/', {
+      //   username: username, password: password
+      // }).then(loginSuccessFn, loginErrorFn);
 
       /**
        * @name loginSuccessFn
        * @desc Set the authenticated account and redirect to index
        */
       function loginSuccessFn(data, status, headers, config) {
-        console.log("Data is",data);
+        console.log("Data is",data, status, headers, config);
         Authentication.setAuthenticatedAccount(data.data);
 
-        //window.location = '/';
+        window.location = '/';
       }
 
       /**
@@ -208,7 +208,9 @@ angular.module('app')
       * @desc Log the new user in
       */
       function registerSuccessFn(data, status, headers, config) {
+        console.log(data);
         Authentication.login(email, password);
+        window.location = '/';
       }
 
       /**

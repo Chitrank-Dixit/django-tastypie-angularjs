@@ -48,7 +48,9 @@ class UserResource(BaseApiResource):
         queryset = User.objects.all()
         resource_name = "user"
         authorization = Authorization()
+        authentication = Authentication()
         always_return_data = True
+        allowed_methods = ['post','get']
 
     def prepend_urls(self):
         return [
@@ -59,9 +61,11 @@ class UserResource(BaseApiResource):
         ]
 
     def login(self, request, **kwargs):
+        print "In Login", request.POST, request.body
+        self.method_check(request, allowed=['post'])
         username = request.POST.get("username",'')
         password = request.POST.get("password",'')
-
+        print username, password
         try:
             user = self.service.login(request, username, password)
             print "Logged in now",user
@@ -74,14 +78,15 @@ class UserResource(BaseApiResource):
         return self.create_response(request, request.user.is_authenticated())
 
     def logout(self, request, **kwargs):
-
+        self.method_check(request, allowed=['post'])
         self.service.logout(request)
         return self.response_success(request)
 
     def register(self, request, **kwargs):
-        username = request.POST.get("username",'bs')
-        password = request.POST.get("password", 'bs')
-        password_again = request.POST.get("password_again", 'bs')
+        self.method_check(request, allowed=['post'])
+        username = request.POST.get("username",'')
+        password = request.POST.get("password", '')
+        password_again = request.POST.get("password_again", '')
 
         try:
             user = self.service.register(request, username, password, password_again)

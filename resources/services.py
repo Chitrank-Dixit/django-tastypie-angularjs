@@ -13,7 +13,7 @@ class AuthService(object):
 
 
 
-        return user
+        return self.create_response(request, {'success': True})
 
     def logout(self, request):
 
@@ -26,6 +26,7 @@ class AuthService(object):
 
         user = User(username=username)
         user.set_password(password)
+        print user
         try:
             user.save()
         except:
@@ -35,4 +36,4 @@ class AuthService(object):
 
         self.login(request, username, password)
 
-        return ''
+        return user

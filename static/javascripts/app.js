@@ -7,9 +7,9 @@ angular.module('app',['ui.router', 'ngCookies', 'ngRoute'])
   $httpProvider.defaults.useXDomain = true;
   $httpProvider.defaults.xsrfCookieName = 'csrftoken';
   $httpProvider.defaults.xsrfHeaderName = 'X-CSRFToken';
-  delete $httpProvider.defaults.headers.common['X-Requested-With'];
-  $httpProvider.defaults.headers.post['Content-Type'] = 'application/json';
-  $httpProvider.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
+  // //delete $httpProvider.defaults.headers.common['X-Requested-With'];
+  // $httpProvider.defaults.headers.post['Content-Type'] = 'application/json';
+  // $httpProvider.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
 
   $routeProvider.when('/', {
       controller: 'IndexController', 
@@ -35,7 +35,7 @@ angular.module('app',['ui.router', 'ngCookies', 'ngRoute'])
         controller: 'AttendenceController',
         controllerAs: 'vm',
         templateUrl: '/static/templates/class_management/class_management.html'
-    }).otherwise('/');
+    });
 
   // $stateProvider
   //   .state('index', {
