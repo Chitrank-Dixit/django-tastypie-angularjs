@@ -119,18 +119,20 @@ angular.module('app')
      */
     function login(username, password) {
       console.log("In There");
-      
+      var data = {username: username, password: password};
       return $http({
         method: 'POST',
         url: '/api/v1/user/login/',
-        headers: {'X-Requested-With': 'XMLHttpRequest', 'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'},
-        data: { username: username, password: password},
-      }).success(function(data, status, headers, config) {
-        console.log("Created new author " + data.name);
-        window.location.href = "/";
-      }).error(function(response, status) {
-        console.log("Failed to create new author " + status + ' ' + response);
-      });
+        headers: {'X-Requested-With': 'XMLHttpRequest', 'Content-Type': 'application/json'},
+        params: { data },
+      }).then(function(data, status, headers, config) {
+        console.log("Created new author " + data.data);
+        Authentication.setAuthenticatedAccount(data.data);
+        //window.location.href = "/";
+      })
+      // .error(function(response, status) {
+      //   console.log("Failed to create new author " + status + ' ' + response);
+      // });
 	     // console.log(username, password)
       // return $http.post('/api/v1/user/login/', {
       //   username: username, password: password

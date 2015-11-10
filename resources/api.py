@@ -61,17 +61,46 @@ class UserResource(BaseApiResource):
         ]
 
     def login(self, request, **kwargs):
-        print "In Login", request.POST, request.body
+        # print "In Login", request.POST
+        # self.method_check(request, allowed=['post'])
+        # username = request.POST.get("username",'')
+        # password = request.POST.get("password",'')
+        # print username, password
+        # try:
+        #     user = self.service.login(request, username, password)
+        #     print "Logged in now",user
+        #     return self.response_success(request, data={"id": user.id})
+        # except Exception, e:
+        #     return self.response_failure(request, str(e))
+
         self.method_check(request, allowed=['post'])
-        username = request.POST.get("username",'')
-        password = request.POST.get("password",'')
-        print username, password
-        try:
-            user = self.service.login(request, username, password)
-            print "Logged in now",user
-            return self.response_success(request, data={"id": user.id})
-        except Exception, e:
-            return self.response_failure(request, str(e))
+
+        print request.POST.get('username','')
+        # data = self.deserialize(request, request.body, format=request.META.get('CONTENT_TYPE', 'application/json'))
+
+        # username = data.get('username', '')
+        # password = data.get('password', '')
+
+        username = request.POST.get('username','')
+        password = request.POST.get('password','')
+
+        user = authenticate(username=username, password=password)
+        if user:
+            if user.is_active:
+                login(request, user)
+                return self.create_response(request, {
+                    'success': True
+                })
+            else:
+                return self.create_response(request, {
+                    'success': False,
+                    'reason': 'disabled',
+                    }, HttpForbidden )
+        else:
+            return self.create_response(request, {
+                'success': False,
+                'reason': 'incorrect',
+                }, HttpUnauthorized )
 
     def is_logged_in(self, request, **kwargs):
 
@@ -79,7 +108,7 @@ class UserResource(BaseApiResource):
 
     def logout(self, request, **kwargs):
         self.method_check(request, allowed=['post'])
-        self.service.logout(request)
+        logout(request)
         return self.response_success(request)
 
     def register(self, request, **kwargs):
@@ -89,7 +118,21 @@ class UserResource(BaseApiResource):
         password_again = request.POST.get("password_again", '')
 
         try:
-            user = self.service.register(request, username, password, password_again)
+            #user = self.service.register(request, username, password, password_again)
+            if password_again != password:
+                raise Exception("Passwords don't match")
+
+            user = User(username=username)
+            user.set_password(password)
+            print user
+            try:
+                user.save()
+            except:
+                raise Exception("Email already taken")
+
+        
+
+            self.login(request)
             return self.response_success(request, data={"id": user.id})
         except Exception, e:
             return self.response_failure(request, str(e))

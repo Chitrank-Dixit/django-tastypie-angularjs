@@ -8,80 +8,80 @@ angular.module('app',['ui.router', 'ngCookies', 'ngRoute'])
   $httpProvider.defaults.xsrfCookieName = 'csrftoken';
   $httpProvider.defaults.xsrfHeaderName = 'X-CSRFToken';
   // //delete $httpProvider.defaults.headers.common['X-Requested-With'];
-  // $httpProvider.defaults.headers.post['Content-Type'] = 'application/json';
-  // $httpProvider.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
+  $httpProvider.defaults.headers.post['Content-Type'] = 'application/json';
+  $httpProvider.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
 
-  $routeProvider.when('/', {
-      controller: 'IndexController', 
-      controllerAs: 'vm',
-      templateUrl: '/static/templates/layout/index.html'
-    }).when('/register', {
-      controller: 'RegisterController', 
-      controllerAs: 'vm',
-      templateUrl: '/static/templates/authentication/register.html'
-    }).when('/login', {
+  // $routeProvider.when('/', {
+  //     controller: 'IndexController', 
+  //     controllerAs: 'vm',
+  //     templateUrl: '/static/templates/layout/index.html'
+  //   }).when('/register', {
+  //     controller: 'RegisterController', 
+  //     controllerAs: 'vm',
+  //     templateUrl: '/static/templates/authentication/register.html'
+  //   }).when('/login', {
+  //     controller: 'LoginController',
+  //     controllerAs: 'vm',
+  //     templateUrl: '/static/templates/authentication/login.html'
+  //   }).when('/+:username', {
+  //     controller: 'AccountController',
+  //     controllerAs: 'vm',
+  //     templateUrl: '/static/templates/accounts/account.html'
+  //   }).when('/+:username/settings', {
+  //     controller: 'AccountSettingsController',
+  //     controllerAs: 'vm',
+  //     templateUrl: '/static/templates/accounts/settings.html'
+  //   }).when('/attendence', {
+  //       controller: 'AttendenceController',
+  //       controllerAs: 'vm',
+  //       templateUrl: '/static/templates/class_management/class_management.html'
+  //   })
+
+  $stateProvider
+    .state('index', {
+      url: '/index',
+      templateUrl: '/static/templates/layout/index.html',
+      controller: 'IndexController',
+      controllerAs: 'vm'
+    })
+
+    .state('register', {
+      url: '/register',
+      templateUrl: '/static/templates/authentication/register.html',
+      controller: 'RegisterController',
+      controllerAs: 'vm'
+    })
+    
+    .state('login', {
+      url: '/login',
+      templateUrl: '/static/templates/authentication/login.html',
       controller: 'LoginController',
-      controllerAs: 'vm',
-      templateUrl: '/static/templates/authentication/login.html'
-    }).when('/+:username', {
-      controller: 'AccountController',
-      controllerAs: 'vm',
-      templateUrl: '/static/templates/accounts/account.html'
-    }).when('/+:username/settings', {
+      controllerAs: 'vm'
+    })
+
+    .state('+:username.settings', {
+      url: '/+:username/settings',
       controller: 'AccountSettingsController',
       controllerAs: 'vm',
       templateUrl: '/static/templates/accounts/settings.html'
-    }).when('/attendence', {
+    })
+
+    .state('+:username', {
+      url: '/+:username',
+      controller: 'AccountController',
+      controllerAs: 'vm',
+      templateUrl: '/static/templates/accounts/account.html'
+    })
+
+    .state('attendence', {
+        url: '/attendence',
         controller: 'AttendenceController',
         controllerAs: 'vm',
         templateUrl: '/static/templates/class_management/class_management.html'
     });
 
-  // $stateProvider
-  //   .state('index', {
-  //     url: '/index',
-  //     templateUrl: '/static/templates/layout/index.html',
-  //     controller: 'IndexController',
-  //     controllerAs: 'vm'
-  //   })
 
-  //   .state('register', {
-  //     url: '/register',
-  //     templateUrl: '/static/templates/authentication/register.html',
-  //     controller: 'RegisterController',
-  //     controllerAs: 'vm'
-  //   })
-    
-  //   .state('login', {
-  //     url: '/login',
-  //     templateUrl: '/static/templates/authentication/login.html',
-  //     controller: 'LoginController',
-  //     controllerAs: 'vm'
-  //   })
-
-  //   .state('+:username.settings', {
-  //     url: '/+:username/settings',
-  //     controller: 'AccountSettingsController',
-  //     controllerAs: 'vm',
-  //     templateUrl: '/static/templates/accounts/settings.html'
-  //   })
-
-  //   .state('+:username', {
-  //     url: '/+:username',
-  //     controller: 'AccountController',
-  //     controllerAs: 'vm',
-  //     templateUrl: '/static/templates/accounts/account.html'
-  //   })
-
-  //   .state('attendence', {
-  //       url: '/attendence',
-  //       controller: 'AttendenceController',
-  //       controllerAs: 'vm',
-  //       templateUrl: '/static/templates/class_management/class_management.html'
-  //   });
-
-
-  //   $urlRouterProvider.otherwise('index');
+    $urlRouterProvider.otherwise('index');
 
 
 }])
