@@ -119,24 +119,24 @@ angular.module('app')
      */
     function login(username, password) {
       console.log("In There");
-      var data = {username: username, password: password};
-      return $http({
-        method: 'POST',
-        url: '/api/v1/user/login/',
-        headers: {'X-Requested-With': 'XMLHttpRequest', 'Content-Type': 'application/json'},
-        params: { data },
-      }).then(function(data, status, headers, config) {
-        console.log("Created new author " + data.data);
-        Authentication.setAuthenticatedAccount(data.data);
-        //window.location.href = "/";
-      })
+      // var data = {username: username, password: password};
+      // return $http({
+      //   method: 'POST',
+      //   url: '/api/v1/user/login/',
+      //   headers: {'X-Requested-With': 'XMLHttpRequest', 'Content-Type': 'application/json'},
+      //   params: { data },
+      // }).then(function(data, status, headers, config) {
+      //   console.log("Created new author " + data.data);
+      //   Authentication.setAuthenticatedAccount(data.data);
+      //   //window.location.href = "/";
+      // })
       // .error(function(response, status) {
       //   console.log("Failed to create new author " + status + ' ' + response);
       // });
 	     // console.log(username, password)
-      // return $http.post('/api/v1/user/login/', {
-      //   username: username, password: password
-      // }).then(loginSuccessFn, loginErrorFn);
+      return $http.post('/api/v1/user/login/', {
+        username: username, password: password
+      }).then(loginSuccessFn, loginErrorFn);
 
       /**
        * @name loginSuccessFn
@@ -145,8 +145,8 @@ angular.module('app')
       function loginSuccessFn(data, status, headers, config) {
         console.log("Data is",data, status, headers, config);
         Authentication.setAuthenticatedAccount(data.data);
-
-        window.location = '/';
+        console.log(Authentication);
+        //window.location = '/';
       }
 
       /**
@@ -176,7 +176,7 @@ angular.module('app')
       function logoutSuccessFn(data, status, headers, config) {
         Authentication.unauthenticate();
 
-        $state.go('home');
+        window.location = '/';
       }
 
       /**
