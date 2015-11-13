@@ -63,7 +63,7 @@ angular.module('app')
     }
     $scope.activate();
 }])
-.factory('Authentication',['$cookies', '$http', '$state' ,function($cookies, $http, $state) {
+.factory('Authentication',['$cookies', '$window','$http', '$state' ,function($cookies, $window,$http, $state) {
 	
 	// csrf settings for the $http resource
 	$http.defaults.xsrfHeaderName = 'X-CSRFToken';
@@ -143,9 +143,9 @@ angular.module('app')
        * @desc Set the authenticated account and redirect to index
        */
       function loginSuccessFn(data, status, headers, config) {
-        console.log("Data is",data.data.data, status, headers, config, Authentication);
-        Authentication.setAuthenticatedAccount(data.data.data);
-        //window.location = '/';
+        console.log("Data is",data, status, headers, config);
+        Authentication.setAuthenticatedAccount(data.data);
+        window.location = '/';
       }
 
       /**
@@ -212,7 +212,7 @@ angular.module('app')
       function registerSuccessFn(data, status, headers, config) {
         console.log(data);
         Authentication.login(email, password);
-        //window.location = '/';
+        window.location = '/';
       }
 
       /**
@@ -233,7 +233,10 @@ angular.module('app')
      * @memberOf app.authentication.services.Authentication
      */
     function setAuthenticatedAccount(account) {
-      $cookies.authenticatedAccount = JSON.stringify(account);
+      console.log(JSON.stringify(account));
+      $window.localStorage.setItem('authenticatedAccount', JSON.stringify(account));
+      //$cookieStore.put("authenticatedAccount", JSON.stringify(account));
+      //$cookies.authenticatedAccount = JSON.stringify(account.id);
     }
 
 

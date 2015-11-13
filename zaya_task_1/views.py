@@ -5,13 +5,13 @@ from django.shortcuts import render, render_to_response
 
 
 
-# class IndexView(TemplateView):
-#     template_name = 'index.html'
+class IndexView(TemplateView):
+    template_name = 'index.html'
 
-#     @method_decorator(ensure_csrf_cookie)
-#     def dispatch(self, *args, **kwargs):
-#         return super(IndexView, self).dispatch(*args, **kwargs)
+    @method_decorator(ensure_csrf_cookie)
+    def dispatch(self, *args, **kwargs):
+        return super(IndexView, self).dispatch(*args, **kwargs)
 
-@csrf_exempt
-def get_index(request):
-    return render_to_response('index.html')
+# @csrf_exempt
+# def get_index(request):
+#     return render_to_response('index.html')

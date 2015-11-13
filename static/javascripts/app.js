@@ -83,10 +83,16 @@ angular.module('app',['ui.router', 'ngCookies', 'ngRoute'])
 
     $urlRouterProvider.otherwise('index');
 
+    
+
 
 }])
 .run(function() {
      //  $http.defaults.xsrfHeaderName = 'X-CSRFToken';
      // $http.defaults.xsrfCookieName = 'csrftoken';
-     console.log("Working Angualr");
+    console.log("Working Angualr");
+    var getUserData = function(arg) {
+      var return_data  = JSON.parse($window.localStorage.getItem('authenticatedAccount'));
+      return return_data[arg];
+    };
 });

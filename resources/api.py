@@ -77,17 +77,20 @@ class UserResource(BaseApiResource):
             if user.is_active:
                 login(request, user)
                 print user
-                return self.create_response(request, {
+                return self.response_success(request, {
                     'success': True,
-                    'data': { 'id': user.id, 'username': user.username, 'email': user.email }
+                    'id': user.id, 
+                    'username': user.username, 
+                    'email': user.email,
+                    'user': request.user
                 })
             else:
-                return self.create_response(request, {
+                return self.response_failure(request, {
                     'success': False,
                     'reason': 'disabled',
                     }, HttpForbidden )
         else:
-            return self.create_response(request, {
+            return self.response_failure(request, {
                 'success': False,
                 'reason': 'incorrect',
                 }, HttpUnauthorized )
