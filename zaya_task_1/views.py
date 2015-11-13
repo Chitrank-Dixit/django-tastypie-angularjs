@@ -15,3 +15,11 @@ class IndexView(TemplateView):
 # @csrf_exempt
 # def get_index(request):
 #     return render_to_response('index.html')
+
+class AttendenceView(TemplateView):
+	template_name = 'index.html'
+
+	@method_decorator(ensure_csrf_cookie)
+	def dispatch(self, *args, **kwargs):
+		return super(AttendenceView, self).dispatch(*args, **kwargs)
+

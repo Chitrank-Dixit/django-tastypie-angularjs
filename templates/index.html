@@ -1,0 +1,63 @@
+<html ng-app="app">
+<head>
+  <title>Behavioral Point System</title>
+
+
+  {% include 'stylesheets.html' %}
+</head>
+
+<body>
+  {% include 'navbar.html' %}
+
+  
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col-xs-12 ng-view"></div>
+    </div>
+  </div>
+
+  {% if user.is_authenticated %}
+
+  	<div class="container-fluid">
+  		<div class="row" ng-controller="AttendenceController">
+  <div class="col-md-4 col-md-offset-4">
+    <h1>Student Card</h1>
+
+    <div class="well">
+      <form role="form" ng-submit="add_attendence()">
+
+      	<div class="form-group">
+          <label for="register__username">Student ID</label>
+          <input type="number" class="form-control" id="register__username" ng-model="vm.student_id" placeholder="Student ID" />
+        </div>
+
+        <div class="form-group">
+          <label for="register__username">Attendence</label>
+          <input type="number" class="form-control" id="register__username" ng-model="vm.attendence" placeholder="" />
+        </div>
+
+        <div class="form-group">
+          <label for="user__type">Behavior Points</label>
+          <p>Helping: <input type="checkbox" name="Helping" ng-model="helping"/></p>
+          <p>Disruptig Class: <input type="checkbox" name="Disrupting Class" ng-model="disrupting" /></p>
+          <p>Doing Homework: <input type="checkbox" name="Doing Homework" ng-model="homework"/></p>
+        </div>
+
+        <div class="form-group">
+          <button type="submit" class="btn btn-primary">Submit</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+  	</div>
+
+  {% endif %}
+
+  {% include 'javascripts.html' %}
+
+
+
+</body>
+</html>

@@ -63,7 +63,7 @@ angular.module('app')
     }
     $scope.activate();
 }])
-.factory('Authentication',['$cookies', '$window','$http', '$state' ,function($cookies, $window,$http, $state) {
+.factory('Authentication',['$cookies', '$window','$http', '$state', '$location' ,function($cookies, $window,$http, $state, $location) {
 	
 	// csrf settings for the $http resource
 	$http.defaults.xsrfHeaderName = 'X-CSRFToken';

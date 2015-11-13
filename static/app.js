@@ -33,28 +33,27 @@ angular.module('app',['ui.router','ngCookies', 'ngRoute'])
       templateUrl: '/static/templates/accounts/settings.html'
     }).when('/attendence', {
         controller: 'AttendenceController',
-        controllerAs: 'vm',
-        templateUrl: '/static/templates/class_management/class_management.html'
-    })
+        templateUrl: '/static/templates/class/class.html'
+    }).otherwise('/');
 
   // $stateProvider
   //   .state('index', {
   //     url: '/index',
-  //     templateUrl: './templates/layout/index.html',
+  //     templateUrl: '/static/templates/layout/index.html',
   //     controller: 'IndexController',
   //     controllerAs: 'vm'
   //   })
 
   //   .state('register', {
   //     url: '/register',
-  //     templateUrl: './templates/authentication/register.html',
+  //     templateUrl: '/static/templates/authentication/register.html',
   //     controller: 'RegisterController',
   //     controllerAs: 'vm'
   //   })
     
   //   .state('login', {
   //     url: '/login',
-  //     templateUrl: 'templates/authentication/login.html',
+  //     templateUrl: '/static/templates/authentication/login.html',
   //     controller: 'LoginController',
   //     controllerAs: 'vm'
   //   })
@@ -63,21 +62,21 @@ angular.module('app',['ui.router','ngCookies', 'ngRoute'])
   //     url: '/+:username/settings',
   //     controller: 'AccountSettingsController',
   //     controllerAs: 'vm',
-  //     templateUrl: 'templates/accounts/settings.html'
+  //     templateUrl: '/static/templates/accounts/settings.html'
   //   })
 
   //   .state('+:username', {
   //     url: '/+:username',
   //     controller: 'AccountController',
   //     controllerAs: 'vm',
-  //     templateUrl: 'templates/accounts/account.html'
+  //     templateUrl: '/static/templates/accounts/account.html'
   //   })
 
   //   .state('attendence', {
   //       url: '/attendence',
   //       controller: 'AttendenceController',
   //       controllerAs: 'vm',
-  //       templateUrl: 'templates/class_management/class_management.html'
+  //       templateUrl: 'templates/class/class.html'
   //   });
 
 
