@@ -143,8 +143,8 @@ angular.module('app')
        * @desc Set the authenticated account and redirect to index
        */
       function loginSuccessFn(data, status, headers, config) {
-        console.log("Data is",data, status, headers, config);
-        Authentication.setAuthenticatedAccount(data.data);
+        console.log("Data is",data, status, headers, config, Authentication);
+        Authentication.setAuthenticatedAccount=data.data;
         console.log(Authentication);
         //window.location = '/';
       }

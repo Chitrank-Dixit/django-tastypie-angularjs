@@ -61,35 +61,26 @@ class UserResource(BaseApiResource):
         ]
 
     def login(self, request, **kwargs):
-        # print "In Login", request.POST
-        # self.method_check(request, allowed=['post'])
-        # username = request.POST.get("username",'')
-        # password = request.POST.get("password",'')
-        # print username, password
-        # try:
-        #     user = self.service.login(request, username, password)
-        #     print "Logged in now",user
-        #     return self.response_success(request, data={"id": user.id})
-        # except Exception, e:
-        #     return self.response_failure(request, str(e))
-
+        
         self.method_check(request, allowed=['post'])
 
         print request.POST.get('username','')
-        # data = self.deserialize(request, request.body, format=request.META.get('CONTENT_TYPE', 'application/json'))
+        data = self.deserialize(request, request.body, format=request.META.get('CONTENT_TYPE', 'application/json'))
 
-        # username = data.get('username', '')
-        # password = data.get('password', '')
-
-        username = request.POST.get('username','')
-        password = request.POST.get('password','')
+        username = data.get('username', '')
+        password = data.get('password', '')
+        print username, password
+        #username = request.POST.get('username','')
+        #password = request.POST.get('password','')
 
         user = authenticate(username=username, password=password)
         if user:
             if user.is_active:
                 login(request, user)
+                print user
                 return self.create_response(request, {
-                    'success': True
+                    'success': True,
+                    'data': { 'id': user.id, 'username': user.username }
                 })
             else:
                 return self.create_response(request, {
