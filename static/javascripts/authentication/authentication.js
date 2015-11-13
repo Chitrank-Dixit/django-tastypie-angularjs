@@ -59,7 +59,7 @@ angular.module('app')
      * @memberOf app.authentication.controllers.RegisterController
      */
     $scope.register = function() {
-      Authentication.register($scope.vm.email, $scope.vm.password, $scope.vm.username);
+      Authentication.register($scope.vm.email, $scope.vm.password, $scope.vm.username, $scope.vm.password_again);
     }
     $scope.activate();
 }])
@@ -143,9 +143,8 @@ angular.module('app')
        * @desc Set the authenticated account and redirect to index
        */
       function loginSuccessFn(data, status, headers, config) {
-        console.log("Data is",data, status, headers, config, Authentication);
-        Authentication.setAuthenticatedAccount=data.data;
-        console.log(Authentication);
+        console.log("Data is",data.data.data, status, headers, config, Authentication);
+        Authentication.setAuthenticatedAccount(data.data.data);
         //window.location = '/';
       }
 
@@ -198,10 +197,11 @@ angular.module('app')
     * @returns {Promise}
     * @memberOf app.authentication.services.Authentication
     */
-    function register(email, password, username) {
+    function register(email, password, username, password_again) {
       return $http.post('/api/v1/user/register/', {
         username: username,
         password: password,
+        password_again: password_again,
         email: email
       }).then(registerSuccessFn, registerErrorFn);
 
@@ -212,7 +212,7 @@ angular.module('app')
       function registerSuccessFn(data, status, headers, config) {
         console.log(data);
         Authentication.login(email, password);
-        window.location = '/';
+        //window.location = '/';
       }
 
       /**

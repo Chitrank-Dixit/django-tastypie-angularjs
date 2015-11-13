@@ -70,8 +70,7 @@ class UserResource(BaseApiResource):
         username = data.get('username', '')
         password = data.get('password', '')
         print username, password
-        #username = request.POST.get('username','')
-        #password = request.POST.get('password','')
+        
 
         user = authenticate(username=username, password=password)
         if user:
@@ -80,7 +79,7 @@ class UserResource(BaseApiResource):
                 print user
                 return self.create_response(request, {
                     'success': True,
-                    'data': { 'id': user.id, 'username': user.username }
+                    'data': { 'id': user.id, 'username': user.username, 'email': user.email }
                 })
             else:
                 return self.create_response(request, {
@@ -104,16 +103,18 @@ class UserResource(BaseApiResource):
 
     def register(self, request, **kwargs):
         self.method_check(request, allowed=['post'])
-        username = request.POST.get("username",'')
-        password = request.POST.get("password", '')
-        password_again = request.POST.get("password_again", '')
+        data = self.deserialize(request, request.body, format=request.META.get('CONTENT_TYPE', 'application/json'))
+        email = data.get('email','')
+        username = data.get('username', '')
+        password = data.get('password', '')
+        password_again = data.get('password_again', '')
 
         try:
             #user = self.service.register(request, username, password, password_again)
             if password_again != password:
                 raise Exception("Passwords don't match")
 
-            user = User(username=username)
+            user = User(username=username, email=email)
             user.set_password(password)
             print user
             try:
