@@ -1,6 +1,5 @@
 from tastypie.authorization import Authorization
 from tastypie.authentication import Authentication
-#from tastypie.resources import ModelResource
 from tastypie import resources
 from User_Manager.models import Student, Teacher
 from Class_Manager.models import Attendence, Points, Behavior
@@ -134,7 +133,7 @@ class UserResource(BaseApiResource):
 
 
 class StudentResource(ModelResource):
-
+    user = fields.ToOneField(UserResource, 'user')
     class Meta:
         queryset = Student.objects.all()
         resource_name = 'student'
@@ -153,7 +152,7 @@ class TeacherResource(ModelResource):
         always_return_data = True
 
 class AttendenceResource(ModelResource):
-    student = fields.ToOneField('resources.api.StudentResource', 'student', null=True)
+    student = fields.ForeignKey(StudentResource, 'student')
     class Meta:
         queryset = Attendence.objects.all()
         resource_name = 'attendence'
@@ -163,7 +162,7 @@ class AttendenceResource(ModelResource):
         always_return_data = True
 
 class PointsResource(ModelResource):
-    student = fields.ToOneField('resources.api.StudentResource', 'student', null=True)
+    student = fields.ForeignKey(StudentResource, 'student')
     class Meta:
         queryset = Points.objects.all()
         resource_name = 'points'

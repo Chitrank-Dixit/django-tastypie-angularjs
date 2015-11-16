@@ -3,12 +3,12 @@ angular.module('app')
 	
 	
 		return { 
-			add_points: function(student, attendence, points){
+			add_points: function(studentdata, attendence, points){
 					$http.post('/api/v1/attendence/', {
-			        	student_id: { "pk": student.id }
+			        	student: { "id": studentdata.id, "age":studentdata.age,"registered_type":studentdata.registered_type, "overall_score": studentdata.overall_score ,"resource_uri":studentdata.resource_uri ,user: studentdata.user}
 			      	}).then(function(data){
 			      	$http.post('/api/v1/points/', {
-			      		student_id: student.id, points: points
+			      		student:{ "id": studentdata.id, "age":studentdata.age,"registered_type":studentdata.registered_type, "overall_score": studentdata.overall_score ,"resource_uri":studentdata.resource_uri ,user: studentdata.user } , points: points
 			      	}).then(function(data){
 			      		//window.location.href= '/';
 			      		Snackbar.show('Student Data Recorded');
