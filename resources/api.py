@@ -134,6 +134,7 @@ class UserResource(BaseApiResource):
 
 
 class StudentResource(ModelResource):
+
     class Meta:
         queryset = Student.objects.all()
         resource_name = 'student'
@@ -152,6 +153,7 @@ class TeacherResource(ModelResource):
         always_return_data = True
 
 class AttendenceResource(ModelResource):
+    student = fields.ToOneField('resources.api.StudentResource', 'student', null=True)
     class Meta:
         queryset = Attendence.objects.all()
         resource_name = 'attendence'
@@ -161,6 +163,7 @@ class AttendenceResource(ModelResource):
         always_return_data = True
 
 class PointsResource(ModelResource):
+    student = fields.ToOneField('resources.api.StudentResource', 'student', null=True)
     class Meta:
         queryset = Points.objects.all()
         resource_name = 'points'

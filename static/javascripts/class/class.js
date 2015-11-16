@@ -1,34 +1,51 @@
 angular.module('app')
-.factory('AttendenceRecord', ['$http', 'Snackbar', function($http, Snackbar){
+.factory('AttendenceRecord', ['$http', 'Snackbar', '$q' , '$window',function($http, Snackbar, $q, $window){
 	
 	
 		return { 
-				add_points: function(student_id, attendence, points){
-
+			add_points: function(student, attendence, points){
 					$http.post('/api/v1/attendence/', {
-		        student_id: student_id
-		      }).then(function(data){
-		      	$http.post('/api/v1/points/', {
-		      		student_id: student_id, points: points
-		      	}).then(function(data){
-		      		window.location.href= '/';
-		      		Snackbar.show('Student Data Recorded');
-		      	}, function(error){
-		      		Snackbar.show('Student Data not Recorded');
+			        	student_id: { "pk": student.id }
+			      	}).then(function(data){
+			      	$http.post('/api/v1/points/', {
+			      		student_id: student.id, points: points
+			      	}).then(function(data){
+			      		//window.location.href= '/';
+			      		Snackbar.show('Student Data Recorded');
+			      	}, function(error){
+			      		Snackbar.show('Student Data not Recorded');
 
+			      	});
+
+			      	}, function(error){
+			      		Snackbar.show('Error');
 		      	});
+		  	},
+		  	select_student: function() {
+			  	$http.get('/api/v1/student/?format=json').then(function(response){
+			  		console.log("Data received", response.data);
+			  		if (typeof response.data === 'object') {
+			  			$window.localStorage.setItem('student_data', JSON.stringify(response.data));
+		                return response.data;
 
-		      }, function(error){
-		      		Snackbar.show('Error');
-		      });
-		  }
-	  }
+		              } else { return "Error"; }
+		            }, function(error) {
+		              return null;
+			  		return data;
 
-	
-	return '';
+			  	}, function(error){
+			  		console.log("Data not received");
+			  		return null;
+			  	});
+		  	},
+	  };
 }])
-.controller('AttendenceController', ['$state','$scope', 'AttendenceRecord' , function($state, $scope, AttendenceRecord) {
+.controller('AttendenceController', ['$state','$scope', '$window','AttendenceRecord' , function($state, $scope, $window, AttendenceRecord) {
 	console.log("Hello");
+
+	AttendenceRecord.select_student();
+
+	$scope.student_data = JSON.parse($window.localStorage.getItem('student_data'));
 
 	$scope.add_attendence = function() {
 		var total_points = 0;
@@ -45,9 +62,39 @@ angular.module('app')
 		{
 			total_points = total_points + 3;
 		}
-		AttendenceRecord.add_points($scope.vm.student_id, $scope.vm.attendence, total_points);
+		var current_student;
+		for (var i=0;i<$scope.student_data.objects.length;i++)
+		{
+			console.log($scope.vm.student_id, $scope.student_data.objects[i]);
+			if (parseInt($scope.vm.student_id) === $scope.student_data.objects[i].id)
+			{
+				console.log($scope.student_data.objects[i]);
+				var current_student = $scope.student_data.objects[i];
+			}
+		}
+		console.log("Here",current_student);
+		AttendenceRecord.add_points(current_student, $scope.vm.attendence, total_points);
 
 	};
 
+	
+		
 
+
+
+		// .then(function sucessCallback(data){
+		// 	if(data)
+		// 	{
+		// 		console.log(data);
+		// 		$scope.student_data = data;
+		// 	}
+		// 	else
+		// 	{
+		// 		console.log("Error");
+		// 	}
+
+		// }, function errorCallback(error){
+		// 	console.log(error);
+		// });
+	
 }]);

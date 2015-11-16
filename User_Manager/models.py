@@ -3,7 +3,7 @@ from django.contrib.auth.models import User
 
 class User_Profile(models.Model):
     user = models.OneToOneField(User)
-    picture = models.ImageField(upload_to='profile_images', null=True)
+    #picture = models.ImageField(upload_to='profile_images', null=True)
     registered_type = models.IntegerField(default=0) # 0 or 1, from Social Site or Regular Sign up
 
     class Meta:

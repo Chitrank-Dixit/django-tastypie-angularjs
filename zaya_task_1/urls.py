@@ -18,7 +18,7 @@ v1_api.register(BehaviorResource())
 urlpatterns = patterns('',
     url(r'^admin/', include(admin.site.urls)),
     url(r'^$', IndexView.as_view(), name='index'),
-    url(r'^attendence/', AttendenceView.as_view(), name='attendence'),
+    #url(r'^attendence/', AttendenceView.as_view(), name='attendence'),
     #url(r'^$', views.get_index),
     url(r'^api/', include(v1_api.urls)),
     

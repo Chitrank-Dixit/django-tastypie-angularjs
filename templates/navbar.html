@@ -15,11 +15,10 @@
         {% if user.is_authenticated %}
           <li><a href="#/+{{ user.username }}" >+{{ user.username }}</a></li>
           <li><a href="#/+{{ user.username }}/settings">Settings</a></li>
-          <li><a onClick="location.href='{% url "attendence" %}'">Attendence</a></li> <!-- onClick="location.href='{% url "attendence" %}'" -->
           <li><a href="javascript:void(0)" ng-click="vm.logout()">Logout</a></li>
         {% else %}
           <li><a href="#/login" >Login</a></li>
-          <li><a href="#/attendence">Attendence</a></li>
+          <!-- <li><a href="#/attendence">Attendence</a></li> -->
           <li><a href="#/register">Register</a></li>
         {% endif %}
       </ul>

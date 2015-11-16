@@ -27,17 +27,18 @@
       <form role="form" ng-submit="add_attendence()">
 
       	<div class="form-group">
-          <label for="register__username">Student ID</label>
-          <input type="number" class="form-control" id="register__username" ng-model="vm.student_id" placeholder="Student ID" />
+          <label for="student__id">Student ID</label>
+          <select name="student_id" ng-model="vm.student_id" ng-options="item.id as item.id for item in student_data.objects">
+          </select>
         </div>
 
         <div class="form-group">
-          <label for="register__username">Attendence</label>
-          <input type="number" class="form-control" id="register__username" ng-model="vm.attendence" placeholder="" />
+          <label for="attendence">Attendence</label>
+          <input type="number" class="form-control" id="attendence" ng-model="vm.attendence" placeholder="" />
         </div>
 
         <div class="form-group">
-          <label for="user__type">Behavior Points</label>
+          <label for="behavior_points">Behavior Points</label>
           <p>Helping: <input type="checkbox" name="Helping" ng-model="helping"/></p>
           <p>Disruptig Class: <input type="checkbox" name="Disrupting Class" ng-model="disrupting" /></p>
           <p>Doing Homework: <input type="checkbox" name="Doing Homework" ng-model="homework"/></p>
